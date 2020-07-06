@@ -1,0 +1,9 @@
+{
+    "name": "first assignment",
+    "description": "javascript assignment one",
+    "main": "index.js", 
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jessicasites/ITC-122-"
+    }
+}
