@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Employees</title>
+    <link rel="stylesheet" type="text/css" href="./css/styles.css" />
+  </head>
+  <body>
+    <h1>Employee Info</h1> 
+    <h2>Details for {{firstName}}:</h2>
+        <ul>
+        {{#with stats}}
+            <li class="stats">First Name: {{ firstName }}
+            <li class="stats">Last Name: {{ lastName }}
+            <li class="stats">Start Date: {{ startDate }}
+            <li class="stats">Status: {{ status }}
+        {{/with}}
+        </ul>
+
+<p class="home"><a href="../">Home</a></p>
+    
