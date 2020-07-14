@@ -16,3 +16,8 @@ exports.getAll = () => {
     return employees;
 }
 
+exports.getDetail = firstName => {
+    const employee = employees.find(employees => employees.firstName === firstName);
+    return employee;
+}
+
