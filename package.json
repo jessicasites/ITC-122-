@@ -1,20 +1,30 @@
 {
     "name": "itc-122",
     "description": "javascript class assignments",
+    "version": "1.0.0",
     "main": "index.js",
     "repository": {
         "type": "git",
         "url": "https://github.com/jessicasites/ITC-122-"
     },
+    "scripts": {
+        "lint": "eslint **/*.js",
+        "test": "mocha test/**"
+    },
     "author": "Jessica Sites",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jessicasites/ITC-122-/blob/master/issues"
-  },
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/jessicasites/ITC-122-/blob/master/issues"
+    },
     "homepage": "https://github.com/jessicasites/ITC-122-/blob/master/README.md",
     "dependencies": {
         "body-parser": "^1.19.0",
         "express": "^4.17.1",
         "express-handlebars": "^5.0.0"
+    },
+    "devDependencies": {
+        "chai": "^4.2.0",
+        "eslint": "^7.5.0",
+        "mocha": "^8.0.1"
     }
 }
