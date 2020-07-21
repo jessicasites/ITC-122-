@@ -33,6 +33,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // Create variable to get info from data.js
 let ListEmployees = employees.getAll();
+//let getDetail = employees.getDetail();
+//let addEmployee = employees.addEmployee();
+//let deleteEmployee  = employees.deleteEmployee();
 
 //Route to home 
 app.get('/', (req, res) => {
