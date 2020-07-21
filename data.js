@@ -16,8 +16,32 @@ exports.getAll = () => {
     return employees;
 }
 
+//get a Detail
 exports.getDetail = firstName => {
     const employee = employees.find(employees => employees.firstName === firstName);
     return employee;
 }
-
+//add an employee 
+exports.addEmployee = (firstName, lastName, startDate, status) =>{
+    if([firstName, lastName, startDate, status].includes(undefined)){
+       return{"added": false,"message": "Employee not added"};
+   }else{
+           const newEmployee = {
+           firstName: firstName,
+           lastName: lastName,
+           startDate: startDate,
+           status: status
+       };
+        employees.push(newEmployee);
+        return {"added":true, "message": "Employee added"};
+      }
+  }
+// delete employee
+exports.deleteEmployee = lastName => {
+    const deleteEmployee = employees.findIndex(employees => employees.lastName ===lastName);
+    if (deleteEmployee > -1){
+        employees.splice(deleteEmployee, 1);
+        return{"delete": true , "message": "Employee deleted"};
+    }else
+    return {"deleted": false , "msg" : "Employee not deleted"}
+    }
