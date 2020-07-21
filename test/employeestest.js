@@ -19,27 +19,23 @@ describe("Employee module", () => {
     });
 // Add Employee
     it("Adds an employee", () => { 
-        employees.addEmployee('Jesus', 'Christ', 10/10/1000, 'fulltime');
+       const result = employees.addEmployee('Jesus', 'Christ', 10/10/1000, 'fulltime');
         expect(ListEmployees).to.deep.include({ firstName: 'Jesus', lastName: 'Christ', startDate: 10/10/1000, status: 'fulltime' });
     });
 
     it("Doesn't add employee", () => {
-        employees.addEmployee('Jesus', 'Christ'); 
+        const result = employees.addEmployee('Jesus', 'Christ'); 
         expect(ListEmployees).to.not.include({ firstName: 'Jesus', lastName: 'Christ', startDate: undefined, status: undefined  });
         expect (employees.addEmployee('Jesus', 'Christ').msg).to.deep.equal('Employee not added');
     });
-// Delete Item Tests
+// Delete Employee
     it("Deletes employee", () => {
-        employees.deleteEmployee('Shelly');
+        const result = employee.deleteEmployee('Shelly');
         expect(ListEmployees).to.not.include({firstName:'Shelly', lastName: 'Randall', startDate:'01/02/2017', status:'partime'});
     });
 
     it("Doesn't delete", () => {
-        employees.deleteEmployee('testName');
+       const result = employees.deleteEmployee('testName');
         expect(employees.deleteEmployee('testName').msg).to.deep.equal('Employee not found');
     })
-
-    
-
-
 });
