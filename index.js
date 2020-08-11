@@ -1,12 +1,10 @@
-/*  Second assignment:
-    Convert your index.js code to use Express syntax,
-Update your default route to show formatted information for each item in your data array:
-create home.handlebars template
-render this template for requests to your default route
-pass your data array to the handlebars template
-display the list of items in your data array 
-each item is linked to your detail page with a query parameter identifying the item
-*/
+//Assignment 4 update your server's 'home' and 'detail' routes to use the new database 
+//instead of your JavaScript data array. Your detail page should display details of the 
+//requested item.
+//Create a new server route to 'delete' an item from your database on request. 
+//Your route should accept a request query parameter identifying the item to delete, 
+//and should return a response indicating whether delete succeeded or failed.
+
 // Create variable for http and data
 // Define express 
 
@@ -16,6 +14,7 @@ const employees = require("./data");
 
 const app = express();
 const exphbs = require('express-handlebars');
+const employee = require("./models/employee");
 
 app.engine('handlebars', exphbs({
     defaultLayout: false
@@ -37,17 +36,42 @@ let ListEmployees = employees.getAll();
 //let addEmployee = employees.addEmployee();
 //let deleteEmployee  = employees.deleteEmployee();
 
-//Route to home 
-app.get('/', (req, res) => {
+//Route to home updated for assignment 4 
+app.get('/', (req, res, next) => {
+  return employees.find({}).lean()
+  .then((employess) => {
+    console.log(employees)
   res.render('home', {employees: ListEmployees});
+})
+.catch(err => next(err));
 });
 
 //Route to the detail
 app.get('/detail', (req, res) => {
   const firstName = req.query.firstName
-  res.render('detail', {firstName:firstName, stats: employees.getDetail(firstName)});
+  employees.findOne({firstname: firstName }).lean()
+  .then((employees) => {
+    console.log(employees)
+  res.render('detail', {firstName:firstName, stats: employees});
+})
+.catch(err => next(err));
 });
 
+// Route to delete
+app.get('/delete', (req, res) => {
+  const firstName = req.query.firstName;
+  employees.findOneAndDelete({firstName: firstName}, (err, employee) => {
+      if (err) {
+          console.log(err);
+      } else if (!employee) {
+          console.log("Employee not found");
+          res.send(`${firstName} not found`);
+      } else if (employee) {
+          console.log(firstName + " deleted");
+          res.send(`${firstName} deleted`);
+      }
+  });
+});
 // Text response
 app.get('/about', (req, res) => {
   res.type('text/plain');
