@@ -1,5 +1,5 @@
 const expect = require("chai").expect;
-const movies = require("../data");
+const employees = require("../data");
 
 const ListEmployees = employees.getAll();
 //const getDetail = employees.getDetail();
