@@ -10,11 +10,10 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const employees = require("./data");
-
+//const employees = require("./data");
 const app = express();
 const exphbs = require('express-handlebars');
-const employee = require("./models/employee");
+const employees = require("./models/employee");
 
 app.engine('handlebars', exphbs({
     defaultLayout: false
@@ -31,7 +30,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended: true})); 
 
 // Create variable to get info from data.js
-let ListEmployees = employees.getAll();
+//let ListEmployees = employees.getAll();
 //let getDetail = employees.getDetail();
 //let addEmployee = employees.addEmployee();
 //let deleteEmployee  = employees.deleteEmployee();
@@ -39,16 +38,16 @@ let ListEmployees = employees.getAll();
 //Route to home updated for assignment 4 
 app.get('/', (req, res, next) => {
   return employees.find({}).lean()
-  .then((employess) => {
+  .then((employees) => {
     console.log(employees)
-  res.render('home', {employees: ListEmployees});
+  res.render('home', {employees});
 })
 .catch(err => next(err));
-});
+})
 
 //Route to the detail
 app.get('/detail', (req, res) => {
-  const firstName = req.query.firstName
+  const firstName = req.query.firstName;
   employees.findOne({firstname: firstName }).lean()
   .then((employees) => {
     console.log(employees)
