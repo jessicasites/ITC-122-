@@ -6,7 +6,7 @@ const credentials = require("../lib/credentials");
 // const connectionString = 'mongodb://' +ip+ '/<DB_NAME>';
 
 mongoose.connect(credentials.connectionString, { dbName: 'sccprojects', useNewUrlParser: true }); 
-
+mongoose.set('useFindAndModify', false);
 mongoose.connection.on('open', () => {
   console.log('Mongoose connected.');
 });
