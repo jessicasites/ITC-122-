@@ -1,9 +1,4 @@
-//Assignment 4 update your server's 'home' and 'detail' routes to use the new database 
-//instead of your JavaScript data array. Your detail page should display details of the 
-//requested item.
-//Create a new server route to 'delete' an item from your database on request. 
-//Your route should accept a request query parameter identifying the item to delete, 
-//and should return a response indicating whether delete succeeded or failed.
+//Your task this week is to provide API routes for each of the methods exported by your data
 
 // Create variable for http and data
 // Define express 
@@ -20,6 +15,7 @@ app.engine('handlebars', exphbs({
 }));
 
 app.set('view engine', 'handlebars');
+app.use('/api', require('cors')());
 
 app.set('port', process.env.PORT || 3000);
 
@@ -34,6 +30,59 @@ app.use(bodyParser.urlencoded({extended: true}));
 //let getDetail = employees.getDetail();
 //let addEmployee = employees.addEmployee();
 //let deleteEmployee  = employees.deleteEmployee();
+
+//API Routes 
+app.get('/api/employees', (req, res) => {
+  return employees.find({}).lean()
+    .then((employees) => {
+        res.json(emloyees)
+    })
+    .catch(err => {res.status(500).send('Error occurred: database error.')})
+})
+
+app.get('/api/details', (req, res) => {
+  return employees.findOne({firstName:req.query.firstName}).lean()
+  .then((employees) => {
+    res.json(employees);
+  })
+  .catch(err => res.status(500).send('Error occurred: database error.'));
+});
+
+app.post('/api/employees/:firstName', (req, res) => {
+  const employeeName = req.params.firstName;
+  employees.findOneAndUpdate({firstName: employeeName}, req.body, {upsert: true, new: true})
+  .then(employee => {
+      res.json(employee)
+  })
+  .catch(err => {
+      res.status(500).send('Error occurred: dabatase error', err)
+  })
+})
+
+app.delete('/api/employees/:firstName', (req, res) => {
+  const employeeName = req.params.firstName; 
+  employees.findOneAndDelete({firstName: employeeName})
+  .then(employee => {
+      if(employee === null) {
+          return res.status(400).send(`Error: "${employeeName}" not found`)   
+      } else {
+          res.json(employee)}
+  })
+
+  .catch(err => {
+      res.status(500).send('Dabatase error', err)
+  })
+})
+
+//res.json(employees.map((a) => {
+  //return {
+    //firstName: a.firstName,
+    //lastName: a.lastName,
+    //startDate: a.startDate,
+   // status: a.status
+ // }
+//})
+//);
 
 //Route to home updated for assignment 4 
 app.get('/', (req, res, next) => {
