@@ -86,14 +86,13 @@ app.delete('/api/employees/:firstName', (req, res) => {
 
 //Route to home updated for assignment 6
 app.get('/', (req, res, next) => {
-  return employees.find({}).lean()
-  .then((employees) => {
-    console.log(employees)
+  employees.find((err,employees) => {
+  console.log(employees)
+  if (err) return next(err);
   //res.render('home', {employees});
   res.render('home_react', {employees: JSON.stringify(employees)});
-})
-.catch(err => next(err));
-})
+});
+});
 
 //Route to the detail
 app.get('/detail', (req, res) => {
