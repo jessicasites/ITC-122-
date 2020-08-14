@@ -17,16 +17,6 @@
          
       });
     }  
-           //const EmployeeDetails = props => {
-                //return <div>
-                  //  <h2>{props.employee.firstName}</h2>
-                   // <ul>
-                    //    <li>{props.employee.lastName}</li>
-                     //   <li>{props.employee.startDate}</li>
-                      //  <li>{props.employee.status}</li>
-                   // </ul>
-               // </div>;
-          //  }
             const ItemList = (props) => {
                 const bullets = props.items.map((item) => {
                     return <li onClick={props.handleClick} key={item._id}>{item.lastName}</li>
@@ -35,10 +25,15 @@
             }
             const ItemDetail = (props) => {
                 return <div>
-                    <h3>Details for {props.item.lastName}</h3>
-                    <li>First Name: {props.item.firstName}</li>  
-                    <li>Start Date: {props.item.startDate}</li>
-                    <li>Status: {props.item.status}</li>
+                    <h3>Details</h3>
+                    <form>
+                        Last name: <input onChange={props.handleEdit} type="text" name = "lastName" value={props.item.lastName || ''}/><br/>
+                        First name: <input onChange={props.handleEdit} type="text" name = "firstName" value={props.item.firstName || ''}/><br/>
+                        Start Date: <input onChange={props.handleEdit} type="text" name = "startDate" value={props.item.startDate || ''}/><br/>
+                        Status: <input onChange={props.handleEdit} type="text" name = "status" value={props.item.status || ''}/>
+                        </form>
+                        <button onClick={props.handleClear}>Clear</button>
+                        <button onClick={props.handleDelete}>Delete</button>
                     </div>
 
             }
@@ -50,13 +45,35 @@
                         items: {{{employees}}}, //provided from index.js for '/' path. 
                         currentItem: {} // current selected item
                     };
-                
-                // bind application state to click handler
           this.selectItem = this.selectItem.bind(this);
+          this.handleClear =this.handleClear.bind(this);
+          this.handleEdit = this.handleEdit.bind(this);
+          this.handleDelete = this.handleDelete.bind(this);
        }
 
+   handleEdit (e){
+       //console.log(e.target.name)
+       //console.log(e.target.value)
+       let newItem = this.state.currentItem;
+       newItem[e.target.name] = e.target.value;
+       this.setState({currentItem: newItem});
+   }
+       handleClear () {
+           this.setState ({currentItem: {}})
+       }
+        handleDelete () {
+           console.log('delete me')
+          fetch(`/api/employee/${this.state.currentItem._id}`)
+          .then((response) => {
+              return response.json();
+          })
+           .then((result) => {
+              console.log(result)
+               //on success, remove deleted item from this.state.items
+           })
+           .catch(err => console.log(err))
+       }
 
-      
       selectItem(e) {
         console.log(e.target.innerText)
         const found = this.state.items.find((employee) => {
@@ -67,21 +84,23 @@
         console.log(found);
       }
       
-                render() {
-                    // render app UI elements
+        render() {
+        // render app UI elements
         return (
           <div>
-              <h2>Employees</h2>
-              
+              <h2>Employees</h2>   
           <ItemList items={this.state.items} handleClick={this.selectItem}/> 
           <hr />
-          <ItemDetail item={this.state.currentItem}/>
-    
+          <ItemDetail 
+          item={this.state.currentItem} 
+          handleClear={this.handleClear}
+          handleEdit={this.handleEdit}
+          handleDelete={this.handleDelete}
+         />
           </div>
           );
       }
     }
-                
             ReactDOM.render(<App />, document.getElementById('root'));
         </script>
     </body>
