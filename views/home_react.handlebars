@@ -1,0 +1,88 @@
+<html>
+<head>
+    <title>React App Demo</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+
+    <body>
+        <div id="root"></div>
+        <script type="text/babel">
+    // define your sub components here
+    const Employees = (props) => {
+      return props.employees.map((employee) => {
+        return <li>{employee.firstName}</li>
+         
+      });
+    }  
+           //const EmployeeDetails = props => {
+                //return <div>
+                  //  <h2>{props.employee.firstName}</h2>
+                   // <ul>
+                    //    <li>{props.employee.lastName}</li>
+                     //   <li>{props.employee.startDate}</li>
+                      //  <li>{props.employee.status}</li>
+                   // </ul>
+               // </div>;
+          //  }
+            const ItemList = (props) => {
+                const bullets = props.items.map((item) => {
+                    return <li onClick={props.handleClick} key={item._id}>{item.lastName}</li>
+                });
+                return <ul>{bullets}</ul>
+            }
+            const ItemDetail = (props) => {
+                return <div>
+                    <h3>Details for {props.item.lastName}</h3>
+                    <li>First Name: {props.item.firstName}</li>  
+                    <li>Start Date: {props.item.startDate}</li>
+                    <li>Status: {props.item.status}</li>
+                    </div>
+
+            }
+                class App extends React.Component {
+                constructor(props){
+                    super(props);
+                     // Set initial state using data from server application
+                    this.state = {
+                        items: {{{employees}}}, //provided from index.js for '/' path. 
+                        currentItem: {} // current selected item
+                    };
+                
+                // bind application state to click handler
+          this.selectItem = this.selectItem.bind(this);
+       }
+
+
+      
+      selectItem(e) {
+        console.log(e.target.innerText)
+        const found = this.state.items.find((employee) => {
+            return employee.lastName == e.target.innerText;
+        });
+        this.setState({currentItem: found});
+        console.log(event.target.innerText);
+        console.log(found);
+      }
+      
+                render() {
+                    // render app UI elements
+        return (
+          <div>
+              <h2>Employees</h2>
+              
+          <ItemList items={this.state.items} handleClick={this.selectItem}/> 
+          <hr />
+          <ItemDetail item={this.state.currentItem}/>
+    
+          </div>
+          );
+      }
+    }
+                
+            ReactDOM.render(<App />, document.getElementById('root'));
+        </script>
+    </body>
+</html>
