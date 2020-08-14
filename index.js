@@ -24,6 +24,7 @@ app.use(express.static(__dirname + '/public'));
 
 // Parse form submissions
 app.use(bodyParser.urlencoded({extended: true})); 
+app.use(bodyParser.json());
 
 // Create variable to get info from data.js
 //let ListEmployees = employees.getAll();
@@ -32,7 +33,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 //let deleteEmployee  = employees.deleteEmployee();
 
 //API Routes 
-app.get('/api/employees', (req, res) => {
+app.get('/api/employee', (req, res) => {
   return employees.find({}).lean()
     .then((employees) => {
         res.json(emloyees)
@@ -48,7 +49,7 @@ app.get('/api/details', (req, res) => {
   .catch(err => res.status(500).send('Error occurred: database error.'));
 });
 
-app.post('/api/employees/:firstName', (req, res) => {
+app.post('/api/employee/:firstName', (req, res) => {
   const employeeName = req.params.firstName;
   employees.findOneAndUpdate({firstName: employeeName}, req.body, {upsert: true, new: true})
   .then(employee => {
@@ -59,30 +60,13 @@ app.post('/api/employees/:firstName', (req, res) => {
   })
 })
 
-app.delete('/api/employees/:firstName', (req, res) => {
-  const employeeName = req.params.firstName; 
-  employees.findOneAndDelete({firstName: employeeName})
-  .then(employee => {
-      if(employee === null) {
-          return res.status(400).send(`Error: "${employeeName}" not found`)   
-      } else {
-          res.json(employee)}
-  })
-
-  .catch(err => {
-      res.status(500).send('Dabatase error', err)
-  })
-})
-
-//res.json(employees.map((a) => {
-  //return {
-    //firstName: a.firstName,
-    //lastName: a.lastName,
-    //startDate: a.startDate,
-   // status: a.status
- // }
-//})
-//);
+app.get('/api/employee/:id', (req, res, next) =>{
+  employees.deleteOne({"_id":req.params.id}, (err, result) => {
+    if (err) return next(err);
+    console.log(result)
+    res.json({"deleted": result});
+  });
+});
 
 //Route to home updated for assignment 6
 app.get('/', (req, res, next) => {
