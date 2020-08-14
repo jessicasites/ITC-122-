@@ -1,4 +1,4 @@
-//Your task this week is to provide API routes for each of the methods exported by your data
+//Create a new React-based home page
 
 // Create variable for http and data
 // Define express 
@@ -84,12 +84,13 @@ app.delete('/api/employees/:firstName', (req, res) => {
 //})
 //);
 
-//Route to home updated for assignment 4 
+//Route to home updated for assignment 6
 app.get('/', (req, res, next) => {
   return employees.find({}).lean()
   .then((employees) => {
     console.log(employees)
-  res.render('home', {employees});
+  //res.render('home', {employees});
+  res.render('home_react', {employees: JSON.stringify(employees)});
 })
 .catch(err => next(err));
 })
